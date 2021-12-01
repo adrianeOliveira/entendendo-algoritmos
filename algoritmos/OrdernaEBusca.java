@@ -1,3 +1,5 @@
+package algoritmos;
+
 public class OrdernaEBusca {
     public static void main(String[] args) {
         int[] ordernarPorSelecao = ordernarPorSelecao(new int[]{4, 5, 2, 6, 7, 9});

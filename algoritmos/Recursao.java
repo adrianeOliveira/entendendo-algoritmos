@@ -1,3 +1,5 @@
+package algoritmos;
+
 public class Recursao {
     public static void main(String[] args) {
         contagemRegressiva(10);
