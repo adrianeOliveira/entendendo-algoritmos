@@ -17,17 +17,17 @@ public class BuscaBinaria {
 			meio = (baixo + alto) / 2;
 			chute = lista[meio];
 			if (chute == item) {
-				System.out.println(String.format("Chute = item: %d", chute));
+				System.out.printf("Chute = item: %d", chute);
 				return meio;
 			} else if (chute > item) {
-				System.out.println(String.format("Chute muito alto: %d", chute));
+				System.out.printf("Chute muito alto: %d", chute);
 				alto = meio - 1;
 			} else {
-				System.out.println(String.format("Chute muito baixo: %d", chute));
+				System.out.printf("Chute muito baixo: %d", chute);
 				baixo = meio + 1;
 			}
 		}
-		System.out.println(String.format("Chute não esta dentro do array: %d", chute));
+		System.out.printf("Chute não esta dentro do array: %d", chute);
 		return baixo;
 	}
 
