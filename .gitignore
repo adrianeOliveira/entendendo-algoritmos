@@ -1,3 +1,4 @@
 *.class
 out/
-.ideia/
+/.ideia/
+/entendendo-algoritmos.iml
