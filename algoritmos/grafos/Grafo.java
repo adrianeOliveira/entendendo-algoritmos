@@ -1,13 +1,14 @@
 package algoritmos.grafos;
 
 import java.util.Map;
+import java.util.Queue;
 
 public class Grafo {
 
-    Map<Vertice, Aresta> amigosAdjascentes;
+    Map<String, Queue<String>> vizinhos;
 
-    public Grafo(Vertice vertice, Aresta aresta) {
-        this.amigosAdjascentes = Map.of(vertice, aresta);
+    public Grafo(Map<String, Queue<String>> vizinhos) {
+        this.vizinhos = vizinhos;
     }
 
     @Override
@@ -17,18 +18,18 @@ public class Grafo {
 
         Grafo grafo = (Grafo) o;
 
-        return amigosAdjascentes.equals(grafo.amigosAdjascentes);
+        return vizinhos.equals(grafo.vizinhos);
     }
 
     @Override
     public int hashCode() {
-        return amigosAdjascentes.hashCode();
+        return vizinhos.hashCode();
     }
 
     @Override
     public String toString() {
         return "Grafo{" +
-                "amigosAdjascentes=" + amigosAdjascentes +
+                "vizinhos=" + vizinhos +
                 '}';
     }
 }

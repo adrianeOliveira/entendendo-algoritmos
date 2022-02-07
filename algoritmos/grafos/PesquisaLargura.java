@@ -1,55 +1,48 @@
 package algoritmos.grafos;
 
-import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import static java.util.Collections.emptyList;
+import static java.util.Arrays.asList;
 
 public class PesquisaLargura {
 
     public static void main(String[] args) {
-        String nome = "adriane";
-        Queue<String> amigosList = new PriorityQueue<>();
-        amigosList.add("felipe");
-        amigosList.add("daniela");
-        amigosList.add("pantera");
+        Grafo grafo = construirGrafo();
+        Queue<String> amigos = grafo.vizinhos.get("adriane");
 
-        while (!amigosList.isEmpty()) {
-            String amigo = amigosList.poll();
+        do {
+            String amigo = amigos.poll();
             if (amigoEvendedor(amigo)) {
                 System.out.printf("Amigo %s começa com a letra M\n", amigo);
                 return;
             } else {
-                amigosList.add(grafo.get(nome));
+                amigos.addAll(grafo.vizinhos.get(amigo));
             }
-        }
+        } while (!amigos.isEmpty());
     }
 
-    private static void construirGrafo() {
-        Vertice claire = new Vertice("claire");
-        Aresta amigosClaire = new Aresta(emptyList());
+    private static Grafo construirGrafo() {
+        String claire = "claire";
+        String gustavo = "gustavo";
+        String gabriel = "mgabriel";
+        String beatriz = "Mbeatriz";
+        String felipe = "felipe";
+        String adriane = "adriane";
 
-        Vertice gustavo = new Vertice("gustavo");
-        Aresta amigosGustavo = new Aresta(emptyList());
-
-        Vertice gabriel = new Vertice("gabriel");
-        Aresta amigosGabriel = new Aresta(emptyList());
-
-        Vertice beatriz = new Vertice("beatriz");
-        Aresta amigosBeatriz = new Aresta(List.of(gustavo));
-
-        Vertice felipe = new Vertice("felipe");
-        Aresta amigosFelipe = new Aresta(List.of(gabriel));
-
-
-        Vertice adriane = new Vertice("adriane");
-        Aresta amigosAdriane = new Aresta(List.of(beatriz, felipe, claire));
-
+        Map<String, Queue<String>> map = Map.of(adriane, new PriorityQueue<>(asList(claire, beatriz, felipe)),
+                felipe, new PriorityQueue<>(asList(gabriel)),
+                gabriel, new PriorityQueue<>(),
+                beatriz, new PriorityQueue<>(asList(gustavo)),
+                gustavo, new PriorityQueue<>(),
+                claire, new PriorityQueue<>()
+        );
+        return new Grafo(map);
     }
 
-    private static boolean amigoEvendedor(String amigo) {
-        return amigo.startsWith("M") || amigo.startsWith("m");
+    private static boolean amigoEvendedor(String nome) {
+        return nome.startsWith("M") || nome.startsWith("m");
     }
 
 }
