@@ -1,5 +1,6 @@
 package algoritmos;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 public class TabelaHash {
@@ -12,6 +13,8 @@ public class TabelaHash {
 
         System.out.printf("Tabela hash de fruta %s\n", tabelaHash);
         System.out.printf("Valor da laranja = %s\n", tabelaHash.buscar("laranja"));
+        System.out.printf("Valor da pera = %s\n", tabelaHash.buscar("pêra"));
+        System.out.printf("Valor da uva = %s\n", tabelaHash.buscar("uva"));
     }
 
     String[] nomes;
@@ -19,8 +22,9 @@ public class TabelaHash {
     Double[] precos;
 
     public TabelaHash(int tamanho) {
-        this.nomes = new String[tamanho];
-        this.precos = new Double[tamanho];
+        int tamanhoFinal = definindoTamanho(tamanho);
+        this.nomes = new String[tamanhoFinal];
+        this.precos = new Double[tamanhoFinal];
     }
 
     public void adicionar(String nome, Double preco) {
@@ -34,58 +38,17 @@ public class TabelaHash {
         return precos[indice];
     }
 
-    public int funcaoHash(String nome) {
-        int hashCodeAbsoluto = Math.abs(nome.hashCode());
-
-        int indice = hashCodeAbsoluto / contarCasasDecimais(hashCodeAbsoluto);
-
-        if (indice > precos.length) {
-            throw new RuntimeException("Nome inválido para calculo do indice da tabela!");
+    public int funcaoHash(String valor) {
+        int resultado = 0;
+        int tamanho = valor.length();
+        for (byte byteValor : valor.getBytes(Charset.defaultCharset())){
+            resultado = (byteValor + resultado)/(definindoTamanho(tamanho));
         }
-
-        return indice;
+        return resultado;
     }
 
-    public int contarCasasDecimais(int valor) {
-        int valorASerComparado = Math.abs(valor);
-
-        if (valorASerComparado <  10) {
-            return 1;
-        }
-
-        if (valorASerComparado >=  10 && valorASerComparado < Math.pow(10, 2)) {
-            return 10;
-        }
-
-        if (valorASerComparado >= Math.pow(10, 2) && valorASerComparado < Math.pow(10, 3)) {
-            return (int) Math.pow(10, 2);
-        }
-
-        if (valorASerComparado >= Math.pow(10, 3) && valorASerComparado < Math.pow(10, 4)) {
-            return (int) Math.pow(10, 3);
-        }
-
-        if (valorASerComparado >= Math.pow(10, 4) && valorASerComparado < Math.pow(10, 5)) {
-            return (int) Math.pow(10, 4);
-        }
-
-        if (valorASerComparado >= Math.pow(10, 5) && valorASerComparado < Math.pow(10, 6)) {
-            return (int) Math.pow(10, 5);
-        }
-
-        if (valorASerComparado >= Math.pow(10, 6) && valorASerComparado < Math.pow(10, 7)) {
-            return (int) Math.pow(10, 6);
-        }
-
-        if (valorASerComparado >= Math.pow(10, 7) && valorASerComparado < Math.pow(10, 8)) {
-            return (int) Math.pow(10, 7);
-        }
-
-        if (valorASerComparado >= Math.pow(10, 8) && valorASerComparado < Math.pow(10, 9)) {
-            return (int) Math.pow(10, 8);
-        }
-
-        return (int) Math.pow(10, 9);
+    public int definindoTamanho(int tamanho) {
+        return tamanho * tamanho;
     }
 
     @Override
@@ -93,6 +56,6 @@ public class TabelaHash {
         return "TabelaHash{" +
                 "\nnomes=" + Arrays.toString(nomes) +
                 "\nprecos=" + Arrays.toString(precos) +
-                '}';
+                "\n}";
     }
 }
