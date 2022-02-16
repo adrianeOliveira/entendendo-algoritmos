@@ -17,19 +17,17 @@ public class TabelaHash {
         System.out.printf("Valor da uva = %s\n", tabelaHash.buscar("uva"));
     }
 
-    String[] nomes;
-
     Double[] precos;
 
+    private int tamanho;
+
     public TabelaHash(int tamanho) {
-        int tamanhoFinal = definindoTamanho(tamanho);
-        this.nomes = new String[tamanhoFinal];
-        this.precos = new Double[tamanhoFinal];
+        this.tamanho = definindoTamanho(tamanho);
+        this.precos = new Double[this.tamanho];
     }
 
     public void adicionar(String nome, Double preco) {
         int indice = funcaoHash(nome);
-        nomes[indice] = nome;
         precos[indice] = preco;
     }
 
@@ -38,11 +36,10 @@ public class TabelaHash {
         return precos[indice];
     }
 
-    public int funcaoHash(String valor) {
+    public int funcaoHash(String chave) {
         int resultado = 0;
-        int tamanho = valor.length();
-        for (byte byteValor : valor.getBytes(Charset.defaultCharset())){
-            resultado = (byteValor + resultado)/(definindoTamanho(tamanho));
+        for (byte byteValor : chave.getBytes(Charset.defaultCharset())){
+            resultado = (byteValor + resultado)/(definindoTamanho(chave.length()));
         }
         return resultado;
     }
@@ -54,7 +51,6 @@ public class TabelaHash {
     @Override
     public String toString() {
         return "TabelaHash{" +
-                "\nnomes=" + Arrays.toString(nomes) +
                 "\nprecos=" + Arrays.toString(precos) +
                 "\n}";
     }
