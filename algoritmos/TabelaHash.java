@@ -1,11 +1,16 @@
 package algoritmos;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Map;
+
+import static java.lang.Math.max;
 
 public class TabelaHash {
+
     public static void main(String[] args) {
-        TabelaHash tabelaHash = new TabelaHash(5);
+        //-- minha implementação de tabela hash
+        TabelaHashCustom tabelaHash = new TabelaHashCustom();
 
         tabelaHash.adicionar("laranja", 2.3);
         tabelaHash.adicionar("pêra", 5.0);
@@ -17,41 +22,38 @@ public class TabelaHash {
         System.out.printf("Valor da uva = %s\n", tabelaHash.buscar("uva"));
     }
 
-    Double[] precos;
+    static class TabelaHashCustom {
+        Map<Integer, Double> mapPreco;
 
-    private int tamanho;
-
-    public TabelaHash(int tamanho) {
-        this.tamanho = definindoTamanho(tamanho);
-        this.precos = new Double[this.tamanho];
-    }
-
-    public void adicionar(String nome, Double preco) {
-        int indice = funcaoHash(nome);
-        precos[indice] = preco;
-    }
-
-    public Double buscar(String nome) {
-        int indice = funcaoHash(nome);
-        return precos[indice];
-    }
-
-    public int funcaoHash(String chave) {
-        int resultado = 0;
-        for (byte byteValor : chave.getBytes(Charset.defaultCharset())){
-            resultado = (byteValor + resultado)/(definindoTamanho(chave.length()));
+        public TabelaHashCustom() {
+            mapPreco = new Hashtable<>();
         }
-        return resultado;
-    }
 
-    public int definindoTamanho(int tamanho) {
-        return tamanho * tamanho;
-    }
+        public void adicionar(String nome, Double preco) {
+            int indice = funcaoHash(nome);
+            mapPreco.put(indice, preco);
+        }
 
-    @Override
-    public String toString() {
-        return "TabelaHash{" +
-                "\nprecos=" + Arrays.toString(precos) +
-                "\n}";
+        public Double buscar(String valor) {
+            int indice = funcaoHash(valor);
+            return mapPreco.get(indice);
+        }
+
+        private int funcaoHash(String chave) {
+            int resultado = 0;
+            int tamanho = max(mapPreco.size(), 1);
+            int constante = 3;
+            for (byte byteValor : chave.getBytes(Charset.defaultCharset())){
+                resultado += (byteValor * constante);
+            }
+            return resultado % tamanho;
+        }
+
+        @Override
+        public String toString() {
+            return "TabelaHash{" +
+                    "\nprecos=" + mapPreco.values().stream().toList() +
+                    "\n}";
+        }
     }
 }
