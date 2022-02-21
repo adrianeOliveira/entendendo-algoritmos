@@ -1,48 +1,38 @@
 package algoritmos.grafos;
 
-import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Queue;
-
-import static java.util.Arrays.asList;
 
 public class PesquisaLargura {
 
     public static void main(String[] args) {
-        Grafo grafo = construirGrafo();
-        Queue<String> amigos = grafo.vizinhos.get("adriane");
+        Grafo grafo = new Grafo.Builder().construirGrafo();
+        encontrarAmigoComLetraM(grafo);
+    }
 
+    public  static void encontrarAmigoComLetraM(Grafo grafo) {
+        Queue<String> amigos = grafo.vizinhos.get("adriane");
+        System.out.printf("Vizinhos: %s\n", amigos);
         do {
             String amigo = amigos.poll();
-            if (amigoEvendedor(amigo)) {
-                System.out.printf("Amigo %s começa com a letra M\n", amigo);
-                return;
+            if (!grafo.pessoasVerificadas.contains(amigo)) {
+                if (grafo.nomeComecaComM(amigo)) {
+                    System.out.printf("Amigo %s começa com a letra M\n", amigo);
+                    return;
+                } else {
+                    grafo.pessoasVerificadas.add(amigo);
+                    Queue<String> vizinhosDeAmigo = grafo.vizinhos.get(amigo);
+                    if (!vizinhosDeAmigo.isEmpty()) {
+                        System.out.printf("Amigo %s, não começa com a letra M\nAdicionando seus amigos {%s} a lista de vizinhos...\n", amigo, vizinhosDeAmigo);
+                        amigos.addAll(vizinhosDeAmigo);
+                    } else {
+                        System.out.printf("Amigo %s não possui vizinhos\n", amigo);
+                    }
+                    System.out.printf("Vizinhos: %s\n", amigos);
+                }
             } else {
-                amigos.addAll(grafo.vizinhos.get(amigo));
+                System.out.printf("Amigo %s ja verificado\n", amigo);
             }
         } while (!amigos.isEmpty());
-    }
-
-    private static Grafo construirGrafo() {
-        String claire = "claire";
-        String gustavo = "gustavo";
-        String gabriel = "mgabriel";
-        String beatriz = "Mbeatriz";
-        String felipe = "felipe";
-        String adriane = "adriane";
-
-        Map<String, Queue<String>> map = Map.of(adriane, new PriorityQueue<>(asList(claire, beatriz, felipe)),
-                felipe, new PriorityQueue<>(asList(gabriel)),
-                gabriel, new PriorityQueue<>(),
-                beatriz, new PriorityQueue<>(asList(gustavo)),
-                gustavo, new PriorityQueue<>(),
-                claire, new PriorityQueue<>()
-        );
-        return new Grafo(map);
-    }
-
-    private static boolean amigoEvendedor(String nome) {
-        return nome.startsWith("M") || nome.startsWith("m");
     }
 
 }
