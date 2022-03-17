@@ -1,4 +1,4 @@
-package algoritmos;
+package algoritmos.hash;
 
 import java.nio.charset.Charset;
 
@@ -19,9 +19,9 @@ public class FuncaoHash {
         int result = 0;
         int length = value.length();
         for (byte valueByte : value.getBytes(Charset.defaultCharset())){
-            result = (valueByte + result)/(length * length);
+            result += valueByte * 3;
         }
-        return result;
+        return result % length;
     }
 
 }

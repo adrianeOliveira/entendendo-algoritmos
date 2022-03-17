@@ -1,4 +1,4 @@
-package algoritmos;
+package algoritmos.hash;
 
 import java.nio.charset.Charset;
 import java.util.Hashtable;
